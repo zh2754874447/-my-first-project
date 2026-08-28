@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>我的第一个 AI 内容工具</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:#f5f5f7;color:#1d1d1f}.wrap{max-width:760px;margin:0 auto;padding:28px 18px 60px}.card{background:#fff;border-radius:22px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.06);margin-bottom:16px}h1{font-size:30px;margin:6px 0 10px}.sub{color:#6e6e73;line-height:1.7;margin-bottom:24px}textarea{width:100%;min-height:220px;border:1px solid #d2d2d7;border-radius:16px;padding:16px;font-size:16px;line-height:1.7;resize:vertical;outline:none}textarea:focus{border-color:#1d1d1f}button{width:100%;border:0;border-radius:14px;padding:14px 18px;background:#1d1d1f;color:#fff;font-size:17px;font-weight:600;margin-top:14px}.result h2{font-size:18px;margin:0 0 8px}.result p{white-space:pre-wrap;line-height:1.75;color:#333}.tag{display:inline-block;background:#eeeef0;border-radius:999px;padding:6px 10px;font-size:13px;margin-bottom:12px;color:#555}.hint{font-size:13px;color:#86868b;margin-top:10px;line-height:1.6}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="tag">ChatGPT + GitHub 第一次实验</div>
+      <h1>我的第一个 AI 内容工具</h1>
+      <div class="sub">把一段文章粘贴进来，先体验一个本地演示版：自动生成示例标题、简介和口播稿。这个版本不调用 AI 接口，所以不联网也能运行。</div>
+      <textarea id="article" placeholder="把你的文章粘贴到这里……"></textarea>
+      <button id="generate">生成内容</button>
+      <div class="hint">提示：当前只是演示网页。后面可以继续接入真正的 AI，让生成结果由大模型完成。</div>
+    </div>
+
+    <div class="card result">
+      <h2>标题</h2>
+      <p id="title">等待生成……</p>
+    </div>
+
+    <div class="card result">
+      <h2>简介</h2>
+      <p id="summary">等待生成……</p>
+    </div>
+
+    <div class="card result">
+      <h2>3 分钟口播稿示例</h2>
+      <p id="script">等待生成……</p>
+    </div>
+  </div>
+
+  <script>
+    const article = document.getElementById('article');
+    const title = document.getElementById('title');
+    const summary = document.getElementById('summary');
+    const script = document.getElementById('script');
+
+    document.getElementById('generate').addEventListener('click', () => {
+      const text = article.value.trim();
+      if (!text) {
+        alert('先粘贴一段文章。');
+        return;
+      }
+
+      const clean = text.replace(/\s+/g, ' ');
+      const firstSentence = clean.split(/[。！？!?]/)[0].slice(0, 28);
+      const short = clean.slice(0, 90);
+
+      title.textContent = firstSentence
+        ? `${firstSentence}：我们真正需要理解的是什么？`
+        : '从一个问题开始，重新理解我们熟悉的生活';
+
+      summary.textContent = `${short}${clean.length > 90 ? '……' : ''}\n\n这是一份演示生成结果。后续接入 AI 后，可以按照固定风格自动压缩、改写并生成真正的简介。`;
+
+      script.textContent = `今天，我们从一个很常见的问题说起。\n\n${clean.slice(0, 260)}${clean.length > 260 ? '……' : ''}\n\n如果把这个问题再往前推一步，我们会发现，真正值得讨论的并不只是表面的结论，而是它背后的原因、机制，以及它会怎样影响我们的生活。\n\n这就是这个小工具未来可以继续做的事情：把一篇长文章，整理成更适合短视频表达的结构。`;
+    });
+  </script>
+</body>
+</html>
